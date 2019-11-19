@@ -1,0 +1,123 @@
+body{
+    background-color: #bdbdbd;
+}
+div{
+    box-sizing: border-box;
+}
+p{
+    margin: 0;
+    padding: 0;
+}
+ul{
+    list-style: none;
+}
+.App{
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+.Dropdown{
+    position: relative;
+    width: 250px;
+    margin: 10px 25px;
+}
+.Dropdown_box{
+    cursor: pointer;
+    position: relative;
+    border: 2px solid black;
+    min-width: 150px;
+    min-height: 28px;
+}
+.Dropdown > p{
+    padding-bottom: 5px;
+}
+.Dropdown__items{
+    background-color: #bdbdbd;
+    z-index: 2;
+    position: absolute;
+    top: 49px;
+    width: 246px;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    overflow-y: auto;
+    max-height: 146px;
+    margin: 0;
+    padding: 0;
+}
+.Dropdown__items > li{
+    cursor: pointer;
+    position: relative;
+    padding: 2px 0;
+    border-bottom: 2px solid black;
+}
+.Inputbox{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    position: relative;
+    margin: 10px 0;
+    width: 300px;
+}
+.Inputbox > input{
+    height: 28px;
+    box-sizing: border-box;
+    width: 250px;
+}
+.Inputbox_items{
+    cursor: pointer;
+    overflow-y: auto;
+    box-sizing: border-box;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    z-index: 2;
+    top: 43px;
+    width: 250px;
+    position: absolute;
+    background-color: white;
+    max-height: 200px;
+}
+.categories{
+    height: 250px;
+    display: flex;
+    padding-top: 10px;
+    border-top: 1px solid black;
+}
+.aspects{
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+    width: 100%;
+    max-width: 900px;
+}
+.loading{
+    font-size: 20px;
+    padding-top: 20px;
+}
+.triangle_down{
+    position: absolute;
+    right: 2px;
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-top: 5px solid black;
+    border-bottom: 5px solid #bdbdbd;
+    border-right: 5px solid #bdbdbd;
+    border-left: 5px solid #bdbdbd;
+}
+.triangle_right{
+    position: absolute;
+    right: 2px;
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-top: 5px solid #bdbdbd;
+    border-bottom: 5px solid #bdbdbd;
+    border-right: 5px solid #bdbdbd;
+    border-left: 5px solid black;
+}
