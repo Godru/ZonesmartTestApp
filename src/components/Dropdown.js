@@ -10,15 +10,13 @@ class Dropdown extends React.Component{
             selectedItem: {},
             name: '',
             variableOfText: '',
-            multiDropdown: false
         }
     }
     componentWillMount(){
         this.setState({
             items: this.props.items,
             name: this.props.name,
-            variableOfText: this.props["variableOfText"],
-            multiDropdown: this.props.multiDropdown
+            variableOfText: this.props["variableOfText"]
         });
         if(this.props.isOpen !== undefined){
             this.setState({isOpen:this.props.isOpen})
@@ -31,8 +29,7 @@ class Dropdown extends React.Component{
         this.setState({
             items: nextProps.items,
             name: nextProps.name,
-            variableOfText: nextProps["variableOfText"],
-            multiDropdown: nextProps.multiDropdown
+            variableOfText: nextProps["variableOfText"]
         });
         if(nextProps.isOpen !== undefined){
             this.setState({isOpen: nextProps.isOpen})
@@ -50,16 +47,13 @@ class Dropdown extends React.Component{
     setItem = (index) =>{
         this.setState({selectedItem: this.state.items[index]});
         this.props.selectItem(this.state.items[index]);
-        if(!this.state.multiDropdown){
-            this.setState({isOpen: false});
-        }
+        this.setState({isOpen: false});
+
 
 
     }
     setWrapperRef = (node) => {
-        if(!this.state.multiDropdown){
-            this.wrapperRef = node;
-        }
+        this.wrapperRef = node;
     }
 
     handleClickOutside = (event) => {
@@ -71,20 +65,12 @@ class Dropdown extends React.Component{
         let items = undefined;
         if(this.state.items){
             items = this.state.items.map((item,i) => {
-                return (<li onClick={e => this.setItem(i)} key={i}>{this.state.items[i][this.state.variableOfText]}
-                {this.state.multiDropdown ? item['is_leaf'] ? <div className="triangle_down"/> : <div className="triangle_right"/> : <div/>} </li>)
+                return (<li onClick={e => this.setItem(i)} key={i}>{this.state.items[i][this.state.variableOfText]}</li>)
             });
         }
-        let margin = {
-            marginLeft: 25,
-            marginRight: 25
-        }
-        if(this.state.multiDropdown){
-            margin.marginRight = 0;
-            margin.marginLeft = 0;
-        }
+
         return(
-            <div className="Dropdown" style={margin}>
+            <div className="Dropdown" >
                 <p>{this.state.name}</p>
                 <div ref={this.setWrapperRef}>
                     <div onClick={this.openDropdown} className="Dropdown_box">
@@ -92,7 +78,7 @@ class Dropdown extends React.Component{
                         <div className="triangle_down"/>
                     </div>
                     {
-                        this.state.isOpen ? <ul  className="Dropdown__items">{items}</ul > : <ul className="Dropdown__items"/>
+                        this.state.isOpen ? <ul  className="Dropdown__items">{items}</ul > : <div/>
                     }
                 </div>
             </div>

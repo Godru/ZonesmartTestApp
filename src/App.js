@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios';
 import Dropdown from './components/Dropdown.js'
 import Inputbox from './components/Inputbox.js'
+import CategoryMenu from './components/CategoryMenu.js'
 const email = "admin@zonesmart.ru";
 const password = "4815162342";
 const url = "http://utss.su/api";
@@ -17,10 +18,10 @@ class App extends React.Component{
             channels: [],
             channel: {},
             categories: [[]],
-            activeCategories: 1,
+            activeCategories: 0,
             id: '',
+            activeCategory: "",
             aspects: [],
-            openDropdown: undefined,
             loadingAspects: false
         }
         this.selectChannel = this.selectChannel.bind(this);
@@ -86,9 +87,9 @@ class App extends React.Component{
             let categories = [[]];
             categories = this.state.categories;
             categories[item.level] = response.data.results;
-            this.setState({categories: categories,activeCategories: item.level + 1,openDropdown: true,aspects: []});
+            this.setState({categories: categories,activeCategories: item.level + 1,openDropdown: true});
         }else{
-            this.setState({id: item.id,openDropdown: false});
+            this.setState({id: item.id,activeCategory: item.name,openDropdown: false});
             this.getAspects();
         }
     }
@@ -113,9 +114,9 @@ class App extends React.Component{
             .then(response => this.setState({aspects: response.data['results'],loadingAspects: false}))
             .catch(err => console.log(err));
     }
-    setCategoryWrapperRef = (node) => {
+   /* setCategoryWrapperRef = (node) => {
          categoryWrapperRef = node;
-    }
+    }*/
 
     selectAspect = (item) =>{
         console.log("Selected aspect: " + item.value)
@@ -123,8 +124,8 @@ class App extends React.Component{
     parseCategories(){
         let categories = [];
         for(let i=0; i<this.state.activeCategories;i++){
-            categories.push(<Dropdown node = {this.state.node} multiDropdown = {true} isOpen = {this.state.openDropdown} key ={i} variableOfText = {"name"}
-                                      name ={"Category level: " + (i + 1)} categoryWrapperRef = {categoryWrapperRef} items = {this.state.categories[i]}
+            categories.push(<Dropdown node = {this.state.node} isOpen = {this.state.openDropdown} key ={i} variableOfText = {"name"}
+                                      name ={"Category level: " + (i + 1)} /*categoryWrapperRef = {categoryWrapperRef}*/ items = {this.state.categories[i]}
                                       selectItem = {this.selectCategory}/>)
         }
         return categories
@@ -132,25 +133,33 @@ class App extends React.Component{
     render(){
         let aspects = this.state.aspects.map((item,i) => {
             if(item['aspectMode'] === 'SELECTION_ONLY'){
-                return (<Dropdown multiDropdown = {false} key = {i} selectItem = {this.selectAspect} variableOfText = {"value"} items = {item["aspect_values"]} name = {item["localizedAspectName"]}/>)
+                return (<Dropdown key = {i} selectItem = {this.selectAspect} variableOfText = {"value"} items = {item["aspect_values"]} name = {item["localizedAspectName"]}/>)
             }else{
                 return (<Inputbox key = {i} selectItem = {this.selectAspect} items = {item["aspect_values"]} name = {item["localizedAspectName"]}/>)
             }
         });
         return (
           <div className="App">
-              <Dropdown multiDropdown = {false} variableOfText = {"name"} name = {"Select channel"}
-                        items = {this.state.channels} selectItem = {this.selectChannel}/>
-              <div ref={this.setCategoryWrapperRef} className="categories">
-                  {this.parseCategories()}
-              </div>
-              <div className="aspects">
-                  {
-                      this.state.loadingAspects ? <div className="loading">Loading aspects</div> : aspects.length > 0 ? aspects : <p/>
-                  }
+              <div className="container">
+                  <Dropdown variableOfText = {"name"} name = {"Select channel"}
+                            items = {this.state.channels} selectItem = {this.selectChannel}/>
+                  <div className="categories">
+                      <CategoryMenu openCategory = {this.state.openCategory} activeCategories ={this.state.activeCategories} selectItem = {this.selectCategory} items ={this.state.categories}/>
+                  </div>
+                  {aspects.length > 0 || this.state.loadingAspects ? <h2>{this.state.activeCategory}</h2> : <div/>}
+                  <div className="aspects">
+                      {
+                          this.state.loadingAspects ? <div className="loading">Loading aspects</div> : aspects.length > 0 ? aspects : <p/>
+                      }
+                  </div>
               </div>
           </div>
         )};
 }
 
 export default App;
+/*<CategoryMenu items ={this.state.categories}/>
+<div ref={this.setCategoryWrapperRef} className="categories">
+                      {this.parseCategories()}
+                  </div>
+*/
