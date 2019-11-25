@@ -9,7 +9,6 @@ const password = "4815162342";
 const url = "http://utss.su/api";
 let token = undefined;
 let refresh = undefined;
-let categoryWrapperRef;
 
 class App extends React.Component{
     constructor(props) {
@@ -40,9 +39,6 @@ class App extends React.Component{
                 refresh = response.data["refresh"];
                 return response
             })
-           /* .then(response => this.selectChannel({
-                channel: 2
-            }))*/
             .then(response => axios.get(url + "/user_channel/",{
                 headers: {
                     'Authorization': 'JWT ' + token
@@ -114,9 +110,6 @@ class App extends React.Component{
             .then(response => this.setState({aspects: response.data['results'],loadingAspects: false}))
             .catch(err => console.log(err));
     }
-   /* setCategoryWrapperRef = (node) => {
-         categoryWrapperRef = node;
-    }*/
 
     selectAspect = (item) =>{
         console.log("Selected aspect: " + item.value)
@@ -125,7 +118,7 @@ class App extends React.Component{
         let categories = [];
         for(let i=0; i<this.state.activeCategories;i++){
             categories.push(<Dropdown node = {this.state.node} isOpen = {this.state.openDropdown} key ={i} variableOfText = {"name"}
-                                      name ={"Category level: " + (i + 1)} /*categoryWrapperRef = {categoryWrapperRef}*/ items = {this.state.categories[i]}
+                                      name ={"Category level: " + (i + 1)}  items = {this.state.categories[i]}
                                       selectItem = {this.selectCategory}/>)
         }
         return categories
@@ -158,8 +151,3 @@ class App extends React.Component{
 }
 
 export default App;
-/*<CategoryMenu items ={this.state.categories}/>
-<div ref={this.setCategoryWrapperRef} className="categories">
-                      {this.parseCategories()}
-                  </div>
-*/
